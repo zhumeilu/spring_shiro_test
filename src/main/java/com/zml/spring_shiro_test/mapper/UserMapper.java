@@ -5,12 +5,15 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 
+import java.util.Set;
+
 @Mapper
 public interface UserMapper {
 
     @Insert(value = "insert into `user`(name,username,password,salt) values(#{name},#{username},#{password},#{salt})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void save(User user);
+
 
 
 }
