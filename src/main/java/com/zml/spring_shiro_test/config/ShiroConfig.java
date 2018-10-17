@@ -1,10 +1,14 @@
 package com.zml.spring_shiro_test.config;
 
+import com.zml.spring_shiro_test.shiro.MyCacheManager;
+import org.apache.shiro.cache.CacheManager;
+import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.apache.shiro.mgt.SecurityManager;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -48,6 +52,30 @@ public class ShiroConfig {
     public DefaultWebSecurityManager defaultWebSecurityManager(){
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(myShiroRealm());
+        securityManager.setCacheManager(myCacheManager());
         return securityManager;
+    }
+
+    @Bean
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager){
+        AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
+        authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
+        return authorizationAttributeSourceAdvisor;
+    }
+
+    @Bean
+    public HandlerExceptionResolver myExceptionReslover(){
+        return new MyExceptionReslover();
+    }
+
+    @Bean("sessionDAO")
+    public MySessionDAO sessionDAO() {
+        MySessionDAO mySessionDAO = new MySessionDAO();
+        return mySessionDAO;
+    }
+
+    @Bean
+    public CacheManager myCacheManager(){
+        return new MyCacheManager();
     }
 }

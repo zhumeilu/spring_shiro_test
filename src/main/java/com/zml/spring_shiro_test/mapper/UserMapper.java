@@ -4,6 +4,7 @@ import com.zml.spring_shiro_test.model.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.Set;
 
@@ -15,5 +16,7 @@ public interface UserMapper {
     void save(User user);
 
 
+    @Select("select * from `user` where username=#{username}")
+    User selectUserByUsername(String username);
 
 }
