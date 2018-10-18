@@ -28,11 +28,11 @@ public class LoginController {
     public Object doLogin(HttpServletRequest request,String username, String password,boolean rememberMe){
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, password);
-        if (rememberMe) {
-            usernamePasswordToken.setRememberMe(true);
-        } else {
-            usernamePasswordToken.setRememberMe(false);
-        }
+//        if (rememberMe) {
+//            usernamePasswordToken.setRememberMe(true);
+//        } else {
+//            usernamePasswordToken.setRememberMe(false);
+//        }
         try{
             subject.login(usernamePasswordToken);
 

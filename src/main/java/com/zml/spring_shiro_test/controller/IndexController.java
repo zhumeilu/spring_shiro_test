@@ -6,8 +6,9 @@ import com.zml.spring_shiro_test.mapper.UserMapper;
 import com.zml.spring_shiro_test.model.Permission;
 import com.zml.spring_shiro_test.model.Role;
 import com.zml.spring_shiro_test.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,7 +20,7 @@ import java.util.Set;
 //@Lazy
 @Controller
 public class IndexController {
-
+    Logger logger = LoggerFactory.getLogger(IndexController.class);
     @Autowired
     private UserMapper userMapper;
     @Autowired
@@ -44,6 +45,8 @@ public class IndexController {
     @RequestMapping("/")
     @ResponseBody
     public Object index(){
+        logger.info("--------index-----------");
+        logger.error("--------index-----------");
         User zml = userMapper.selectUserByUsername("zml");
         System.out.println(zml);
 

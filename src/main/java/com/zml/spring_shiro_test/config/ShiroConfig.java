@@ -1,10 +1,19 @@
 package com.zml.spring_shiro_test.config;
 
+import com.zml.spring_shiro_test.cache.ICacheClient;
+import com.zml.spring_shiro_test.cache.RedisClient;
 import com.zml.spring_shiro_test.shiro.MyCacheManager;
+import com.zml.spring_shiro_test.shiro.MySessionDAO;
 import org.apache.shiro.cache.CacheManager;
+import org.apache.shiro.mgt.RememberMeManager;
+import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.servlet.SimpleCookie;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.apache.shiro.mgt.SecurityManager;
@@ -53,6 +62,7 @@ public class ShiroConfig {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(myShiroRealm());
         securityManager.setCacheManager(myCacheManager());
+        securityManager.setSessionManager(mySessionManager());
         return securityManager;
     }
 
@@ -77,5 +87,23 @@ public class ShiroConfig {
     @Bean
     public CacheManager myCacheManager(){
         return new MyCacheManager();
+    }
+    @Bean
+    @ConfigurationProperties(prefix = "redis")
+    public ICacheClient cacheClient(){
+        return new RedisClient();
+    }
+
+    @Bean
+    public SessionManager mySessionManager(){
+        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager() ;
+        sessionManager.setSessionDAO(sessionDAO());
+//        sessionManager.setSessionIdCookie(new SimpleCookie());
+        return sessionManager;
+    }
+
+    @Bean
+    public RememberMeManager rememberMeManager(){
+        return new CookieRememberMeManager();
     }
 }
